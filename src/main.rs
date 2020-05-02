@@ -31,7 +31,7 @@ fn build_ui(application: &gtk::Application) {
 	column.pack_start(&renderer_text, false);
 	column.add_attribute(&renderer_text, "text", Columns::FirstU32 as i32);
 	
-	let numbers : Vec<u32> = (0..5000).collect();
+	let numbers : Vec<u32> = (0..5000).rev().collect();
 	for number in numbers {
 		my_store.insert_with_values(None, None, &[Columns::FirstU32 as u32], &[&number]);
 	}
