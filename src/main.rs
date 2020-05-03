@@ -16,7 +16,7 @@ enum Columns {
 }
 
 fn create_store(size: usize) -> TreeStore {
-	let treestore = TreeStore::new(&[glib::Type::U32]);
+	let treestore = TreeStore::new(&[glib::Type::U64]);
 	//Note: If we add a sorted model, the runtime explodes even more
 	//let my_store_sort = TreeModelSort::new(&treestore);
 	
