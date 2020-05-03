@@ -22,7 +22,7 @@ fn eval_perf(elems: usize) {
 	let column = TreeViewColumn::new();
 	column.set_title("Column header title");
 
-	let renderer_text = CellRendererText::new();
+	let renderer_text = CellRendererText::new(); //Renderer not relevant to this performance problem
 	column.pack_start(&renderer_text, false);
 	column.add_attribute(&renderer_text, "text", Columns::FirstU32 as i32);
 	
@@ -76,13 +76,15 @@ fn build_ui(application: &gtk::Application) {
 	window.set_title("TreeView performance test");
 	window.set_position(WindowPosition::Center);
 
-	let step = 1000;
-	let max = 100000;
+	let step = 5000;
+	let max = 5000;
 	for i in (step..=max).step_by(step) {
 		eval_perf(i);
 	}
 
-	/*let attach_to_view = true;
+	/*
+	//View/Window not relevant to this performance problem
+	let attach_to_view = true;
 	if attach_to_view {	
 		let my_tree_view = TreeView::new_with_model(&my_store_sort);
 		my_tree_view.set_headers_visible(true);
