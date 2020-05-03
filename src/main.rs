@@ -15,14 +15,9 @@ enum Columns {
 	FirstU32 = 0,
 }
 
-fn build_ui(application: &gtk::Application) {
-	let window = ApplicationWindow::new(application);
-
-	window.set_title("TreeView performance test");
-	window.set_position(WindowPosition::Center);
-
+fn eval_perf(elems: usize) {
 	let my_store = TreeStore::new(&[glib::Type::U32]);
-	let my_store_sort = TreeModelSort::new(&my_store);
+	//let my_store_sort = TreeModelSort::new(&my_store);
 
 	let column = TreeViewColumn::new();
 	column.set_title("Column header title");
@@ -31,7 +26,7 @@ fn build_ui(application: &gtk::Application) {
 	column.pack_start(&renderer_text, false);
 	column.add_attribute(&renderer_text, "text", Columns::FirstU32 as i32);
 	
-	let numbers : Vec<u32> = (0..5000).rev().collect();
+	let numbers : Vec<u32> = (0..elems as u32).collect();
 	for number in numbers {
 		my_store.insert_with_values(None, None, &[Columns::FirstU32 as u32], &[&number]);
 	}
@@ -64,8 +59,8 @@ fn build_ui(application: &gtk::Application) {
 	match now.elapsed() {
 		Ok(elapsed) => {
 			println!(
-				"Time to complete operation {}ms",
-				elapsed.as_secs() * 1000 + elapsed.subsec_millis() as u64
+				"{},{}",
+				elems, elapsed.as_secs() * 1000 + elapsed.subsec_millis() as u64
 			);
 		}
 		Err(e) => {
@@ -73,8 +68,21 @@ fn build_ui(application: &gtk::Application) {
 			println!("Error: {:?}", e);
 		}
 	}
+}
 
-	let attach_to_view = true;
+fn build_ui(application: &gtk::Application) {
+	let window = ApplicationWindow::new(application);
+
+	window.set_title("TreeView performance test");
+	window.set_position(WindowPosition::Center);
+
+	let step = 1000;
+	let max = 100000;
+	for i in (step..=max).step_by(step) {
+		eval_perf(i);
+	}
+
+	/*let attach_to_view = true;
 	if attach_to_view {	
 		let my_tree_view = TreeView::new_with_model(&my_store_sort);
 		my_tree_view.set_headers_visible(true);
@@ -89,7 +97,7 @@ fn build_ui(application: &gtk::Application) {
 			scrolled_window.add(&my_tree_view);
 			window.add(&scrolled_window);
 		}
-	}
+	}*/
 	window.show_all();
 }
 
