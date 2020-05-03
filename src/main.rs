@@ -21,8 +21,7 @@ fn create_store(size: usize) -> TreeStore {
 	//let my_store_sort = TreeModelSort::new(&treestore);
 	
 	{
-		let numbers : Vec<u64> = (0..size as u64).rev().collect();
-		for number in numbers {
+		for number in (0..size as u64).rev() {
 			let iter = treestore.append(None);
 			//treestore.set_value(&iter, Columns::U64Column as u32, &number.to_value());
 		}
